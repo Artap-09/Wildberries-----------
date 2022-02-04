@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  PSQL:
+    container_name: PSQL
+    image: postgres:14
+    networks:
+      - mynet
+    environment:
+      - POSTGRES_PASSWORD="qwerty"
+
+  NATS:
+    container_name: NATS
+    image: nats-streaming
+    networks:
+      - mynet
+
+  L0:
+    build: ./docker
+    image: artap-09/l0
+    container_name: L0
+    ports:
+      - "4969:4969"
+    networks:
+      - mynet
+    
+networks:
+  mynet:
+    name: mynet
+    driver: bridge
