@@ -35,7 +35,7 @@ docker run --name PSQL -p 5432:5432 -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD
 Можете поменять `--name PSQL` эта опция дает название контейнеру с `Postgres`  
 `-e POSTGRES_USER=myuser` можете заменить `myuser` на своего user, так же можно изменить пароль `-e POSTGRES_PASSWORD=qwerty`
 
-:exclamation::exclamation::exclamation: Не меняйте `-p 5432:5432` `-e POSTGRES_DB=l0` эти параметры пока что не возможно настроить в сервисе
+:exclamation::exclamation::exclamation: Не меняйте `-p 5432:5432` `-e POSTGRES_DB=l0` эти параметры пока что невозможно настроить в сервисе
 
 После создания заходим в `bash` в контейнере:
 ```
@@ -84,7 +84,7 @@ docker run --name NATS -p 4222:4222 -p 8222:8222 -d nats-streaming
 ```
 go run L0.go
 ``` 
-В терминали вы должны увидеть:  
+В терминале вы должны увидеть:  
 ![Alt-текс](png/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%20%D0%BE%D1%82%202022-02-08%2017-33-39.png)
 
 Введите `POSTGRES_USER` а затем `POSTGRES_PASSWORD` которые указывали выше.  
