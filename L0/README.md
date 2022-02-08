@@ -1,4 +1,12 @@
 # Level 0
+## Содержание
+1. [Описание](#описание)
+2. [Запуск](#запуск)  
+    * [Postgres](#postgres)
+    * [NATS-streaming](#nats-streaming)
+    * [Сервис](#сервис)  
+3. [Интерфейс](#интерфейс)
+4. [TODO](#todo)
 
 ## Описание
 ![https://img.shields.io/badge/version-v1.0.0-green](https://img.shields.io/badge/version-v1.0.0-green) ![https://img.shields.io/badge/Golang-v1.17.6-blue](https://img.shields.io/badge/Golang-v1.17.6-blue) ![https://img.shields.io/badge/Docker--compose-does%20not%20work-red](https://img.shields.io/badge/Docker--compose-does%20not%20work-red)
@@ -76,4 +84,36 @@ docker run --name NATS -p 4222:4222 -p 8222:8222 -d nats-streaming
 ```
 go run L0.go
 ``` 
-В терминали вы должны увидеть: 
+В терминали вы должны увидеть:  
+![Alt-текс](png/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%20%D0%BE%D1%82%202022-02-08%2017-33-39.png)
+Введите `POSTGRES_USER` а затем `POSTGRES_PASSWORD` которые указывали выше.  
+Если все успешно, то:  
+![Alt-текс](png/Снимок%20экрана%20от%202022-02-08%2017-43-50.png)
+
+:exclamation: сервис подписывается на `foo1` в `NATS-streaming`
+
+## Интерфейс
+Для подключения на сервер в браузере введите:
+```
+localhost:4969
+```
+
+Вам должен открыться интерфейс сервиса (html страница) 
+![Alt-текс](png/Снимок%20экрана%20от%202022-02-08%2017-56-24.png)
+
+После в поле введите нужный `Order UID`
+![Alt-текс](png/Снимок%20экрана%20от%202022-02-08%2017-56-30.png)
+
+и нажмите кнопку `Показать`
+![Alt-текс](png/Снимок%20экрана%20от%202022-02-08%2017-56-36.png)
+
+## TODO
+
+- [ ] Сделать запуск через `docker-copmpose`
+- [ ] Сделать возможность полной ностройки сервиса
+  - [ ] Postgres
+  - [ ] NATS-streaming
+  - [ ] Сервера
+- [ ] Добавить в интерфейс возможность посмотреть какие `Order UID` существуют
+- [ ] Написать тесты
+- [ ] Провести проверку на прочность (сервера, сервиса)
