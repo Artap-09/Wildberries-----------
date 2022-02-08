@@ -6,7 +6,8 @@
     * [NATS-streaming](#nats-streaming)
     * [Сервис](#сервис)  
 3. [Интерфейс](#интерфейс)
-4. [TODO](#todo)
+4. [Docker-compose](#docker-compose)
+5. [TODO](#todo)
 
 ## Описание
 ![https://img.shields.io/badge/version-v1.0.0-green](https://img.shields.io/badge/version-v1.0.0-green) ![https://img.shields.io/badge/Golang-v1.17.6-blue](https://img.shields.io/badge/Golang-v1.17.6-blue) ![https://img.shields.io/badge/Docker--compose-does%20not%20work-red](https://img.shields.io/badge/Docker--compose-does%20not%20work-red)
@@ -108,10 +109,16 @@ localhost:4969
 и нажмите кнопку `Показать`
 ![Alt-текс](png/Снимок%20экрана%20от%202022-02-08%2017-56-36.png)
 
+## Docker-compose
+
+Сервис компилится в контейнере  
+Но при запуске не хочет подключаться к БД (не совпадают пароли)
+
 ## TODO
 
 - [ ] Сделать запуск через `docker-copmpose`
 - [ ] Добавить скрипт создания таблицы
+- [ ] Добавить очистку экрана для этапа входа в БД
 - [ ] Сделать возможность полной ностройки сервиса
   - [ ] Postgres
   - [ ] NATS-streaming
