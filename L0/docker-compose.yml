@@ -4,10 +4,11 @@ services:
   PSQL:
     container_name: PSQL
     image: postgres:14
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=qwerty
     networks:
       - mynet
-    environment:
-      - POSTGRES_PASSWORD="qwerty"
 
   NATS:
     container_name: NATS
@@ -16,9 +17,15 @@ services:
       - mynet
 
   L0:
-    build: ./docker
+    build: ./Исходники
     image: artap-09/l0
     container_name: L0
+    environment:
+      - PSQL_NAME=postgres
+      - PSQL_PASS=qwerty
+      - PSQL_HOST=PSQL
+      - PSQL_PORT=5432
+      - PSQL_DB=l0
     ports:
       - "4969:4969"
     networks:
