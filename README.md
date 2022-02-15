@@ -10,27 +10,27 @@
 - [x] task3
 - [x] task4
 - [x] task5
-- [ ] task6
-- [ ] task7
-- [ ] task8
-- [ ] task9
-- [ ] task10
-- [ ] task11
-- [ ] task12
-- [ ] task13
-- [ ] task14
-- [ ] task15
-- [ ] task16
-- [ ] task17
-- [ ] task18
-- [ ] task19
-- [ ] task20
-- [ ] task21
-- [ ] task22
-- [ ] task23
-- [ ] task24
-- [ ] task25
-- [ ] task26
+- [x] task6
+- [x] task7
+- [x] task8
+- [x] task9
+- [x] task10
+- [x] task11
+- [x] task12
+- [x] task13
+- [x] task14
+- [x] task15
+- [x] task16
+- [x] task17
+- [x] task18
+- [x] task19
+- [x] task20
+- [x] task21
+- [x] task22
+- [x] task23
+- [x] task24
+- [x] task25
+- [x] task26
 
 ## Вопросы
 - [ ] q1
