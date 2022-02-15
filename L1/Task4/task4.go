@@ -26,5 +26,6 @@ func main() {
 func worker(ch <-chan interface{},idx int)  {
 	for{
 		fmt.Printf("Я воркер №%d: %v\n",idx,<-ch)
+		time.Sleep(time.Second)
 	}
 }
