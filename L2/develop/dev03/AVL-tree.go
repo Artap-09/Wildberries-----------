@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -17,7 +16,7 @@ func NewTree() *Tree {
 }
 
 // Insert - метод для добавления значений.
-func (t *Tree) Insert(line []string, sf sortFunc) error {
+func (t *Tree) Insert(line []string, sf sortFunc, unique bool) error {
 	var err error
 
 	if t.Root == nil {
@@ -25,16 +24,15 @@ func (t *Tree) Insert(line []string, sf sortFunc) error {
 		return err
 	}
 
-	nodeInsert, ok := t.Root.Find(line, sf)
+	nodeInsert, ok := t.Root.Find(line, sf, unique)
 
-	if ok {
-		err = fmt.Errorf("значение \"%v\" уже существует", line)
+	if ok && unique {
 		return err
 	}
 
-	newNode:=NewNode(line)
+	newNode := NewNode(line)
 
-	if sf.Sort(sf.idx,nodeInsert,newNode) { // Смотрим левого ребенка
+	if sf.Sort(sf.idx, nodeInsert, newNode) { // Смотрим левого ребенка
 		nodeInsert.LeftChild = newNode
 		nodeInsert.LeftChild.Parent = nodeInsert
 
@@ -46,16 +44,11 @@ func (t *Tree) Insert(line []string, sf sortFunc) error {
 	return err
 }
 
-func (t Tree) Println() []string {
-	return t.Root.Show()
-}
-
-func (t Tree) Find(line []string,sf sortFunc) {
-	if node, ok := t.Root.Find(line,sf); ok {
-		fmt.Println(node.Line)
-	} else {
-		fmt.Println("Нету")
+func (t Tree) Println(resort bool) []string {
+	if resort {
+		return t.Root.ShowMaxMin()
 	}
+	return t.Root.ShowMinMax()
 }
 
 type Node struct {
@@ -75,22 +68,22 @@ func NewNode(line []string) *Node {
 }
 
 // Find - метод структуры Node. Ищет line.
-func (n *Node) Find(line []string,sf sortFunc) (*Node, bool) {
+func (n *Node) Find(line []string, sf sortFunc, unique bool) (*Node, bool) {
 	str1 := strings.Join(n.Line, " ")
 	str2 := strings.Join(line, " ")
-	if strings.Compare(str1, str2) == 0 { // Ищем совпадение
+	if strings.Compare(str1, str2) == 0 && unique { // Ищем совпадение
 		return n, true
 	}
 
-	newNode:=NewNode(line)
+	newNode := NewNode(line)
 
-	if sf.Sort(sf.idx,n,newNode) { // Смотрим левого ребенка
+	if sf.Sort(sf.idx, n, newNode) { // Смотрим левого ребенка
 		if n.LeftChild != nil { // Если он есть
-			return n.LeftChild.Find(line,sf) // ВЫполняем поиск по левому ребенку
+			return n.LeftChild.Find(line, sf, unique) // ВЫполняем поиск по левому ребенку
 		}
 	} else { // Тоже самое но для правого ребенка
 		if n.RightChild != nil {
-			return n.RightChild.Find(line,sf)
+			return n.RightChild.Find(line, sf, unique)
 		}
 	}
 	return n, false
@@ -210,17 +203,33 @@ func (n *Node) Balancing(sf sortFunc) {
 	}
 }
 
-func (n Node) Show() []string {
+func (n Node) ShowMinMax() []string {
 	var str []string
 
 	if n.LeftChild != nil {
-		str = append(str, n.LeftChild.Show()...)
+		str = append(str, n.LeftChild.ShowMinMax()...)
 	}
 
 	str = append(str, strings.Join(n.Line, " "))
 
 	if n.RightChild != nil {
-		str = append(str, n.RightChild.Show()...)
+		str = append(str, n.RightChild.ShowMinMax()...)
+	}
+
+	return str
+}
+
+func (n Node) ShowMaxMin() []string {
+	var str []string
+
+	if n.RightChild != nil {
+		str = append(str, n.RightChild.ShowMaxMin()...)
+	}
+
+	str = append(str, strings.Join(n.Line, " "))
+
+	if n.LeftChild != nil {
+		str = append(str, n.LeftChild.ShowMaxMin()...)
 	}
 
 	return str
@@ -233,22 +242,7 @@ type sortFunc struct {
 
 // Сортировка по символам
 func SortChar(idx int, n1, n2 *Node) bool {
-	result := strings.Compare(n1.Line[idx], n2.Line[idx])
-	/*if len(n1.Line[idx]) > len(n2.Line[idx]) {
-		for i, v := range n2.Line[idx] {
-			if v < rune(n1.Line[idx][i]) {
-				return true
-			}
-		}
-	} else {
-		for i, v := range n1.Line[idx] {
-			if v > rune(n2.Line[idx][i]) {
-				return true
-			}
-		}
-	}*/
-
-	return result > 0
+	return strings.Compare(n1.Line[idx], n2.Line[idx]) > 0
 }
 
 // Сортировка по числу
@@ -263,6 +257,47 @@ func SortInt(idx int, n1, n2 *Node) bool {
 		log.Fatalln(err)
 	}
 
-	
-	return nInt > nodeInt 
+	return nInt > nodeInt
+}
+
+func SortMonth(idx int, n1, n2 *Node) bool {
+	x1, x2 := ParseRuMonth(n1.Line[idx]), ParseRuMonth(n2.Line[idx])
+	if x1 == 0 || x2 == 0 {
+		log.Fatalf("Не месяц %v %v\n", n1.Line[idx], n2.Line[idx])
+	}
+
+	return x1 > x2
+}
+
+func ParseRuMonth(val string) int {
+	val = strings.Trim(val, " ")
+	val = strings.ToLower(val)
+	switch val {
+	case "январь", "января":
+		return 1
+	case "февраль", "февраля":
+		return 2
+	case "март", "марта":
+		return 3
+	case "апрель", "апреля":
+		return 4
+	case "май", "мая":
+		return 5
+	case "июнь", "июня":
+		return 6
+	case "июль", "июля":
+		return 7
+	case "август", "августа":
+		return 8
+	case "сентябрь", "сентября":
+		return 9
+	case "октябрь", "октября":
+		return 10
+	case "ноябрь", "ноября":
+		return 11
+	case "декабрь", "декабря":
+		return 12
+	default:
+		return 0
+	}
 }
